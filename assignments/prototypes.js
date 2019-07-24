@@ -244,7 +244,7 @@ const nightKing = new Villain({
   healthPoints: Infinity,
   name: "The Night King",
   team: "The White Walkers",
-  weapons: ["random ice zombies", "ice spear"],
+  weapons: ["horde of ice zombies", "ice spear"],
   language: "silence"
 });
 
