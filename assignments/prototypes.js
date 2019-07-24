@@ -147,7 +147,7 @@ Hero.prototype = Object.create(Humanoid.prototype);
 
 Humanoid.prototype.attack = function(opponent) {
   let randomInt = Math.floor(Math.random() * this.weapons.length);
-  let damage = Math.floor(Math.random() * 3 + 1);
+  let damage = 2 * Math.floor(Math.random() * 3 + 1);
   opponent.healthPoints -= damage;
 
   console.log(`${this.name} attacks ${opponent.name}!`);
@@ -156,20 +156,13 @@ Humanoid.prototype.attack = function(opponent) {
   console.log(
     `${opponent.name}'s health is now at ${opponent.healthPoints}...`
   );
-  
+
   if (opponent.healthPoints <= 0) {
     console.log(`${opponent.name} has been defeated!`);
     console.log(opponent.destroy());
     console.log(`${this.name.toUpperCase()} IS VICTORIOUS!!`);
-  };
+  }
 };
-
-// Hero.prototype.attack = function(opponent) {
-//   let randomInt = Math.floor(Math.random() * (this.weapons.length));
-//   let damage = Math.floor(Math.random() * 4);
-//   console.log(`${this.name} attacks ${opponent.name}!`);
-//   console.log(`He hits him with his ${this.weapons[randomInt]} and causes -${damage}!`)
-// };
 
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
 const johnWick = new Hero({
@@ -206,14 +199,53 @@ const boban = new Villain({
   language: "Serbian"
 });
 
-const runGame = (hero, villain) => {
-  console.log(hero.greet());
+const runGame = (hero, villain, location) => {
+  console.log(
+    `OUR HERO ${hero.name.toUpperCase()} IS ${location.toUpperCase()} AND WHO SHOULD HE SEE...`
+  );
+
   console.log(villain.greet());
+  console.log(hero.greet());
 
   while (hero.healthPoints > 0 && villain.healthPoints > 0) {
     let randomInt = Math.floor(Math.random() * 2);
     randomInt === 1 ? hero.attack(villain) : villain.attack(hero);
-  };
+  }
 };
 
-runGame(johnWick, boban);
+// runGame(johnWick, boban, 'in the New York Public Library');
+
+const johnSnow = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 3
+  },
+  healthPoints: 10,
+  name: "John Snow",
+  team: "House Stark",
+  weapons: [
+    "Right Fist",
+    "Left Fist",
+    "Valyrian steel sword Longclaw",
+    "dragon flame"
+  ],
+  language: "English"
+});
+
+const nightKing = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 2,
+    height: 5
+  },
+  healthPoints: Infinity,
+  name: "The Night King",
+  team: "The White Walkers",
+  weapons: ["random ice zombies", "ice spear"],
+  language: "silence"
+});
+
+runGame(johnSnow, nightKing, "at the top of the Wall");
