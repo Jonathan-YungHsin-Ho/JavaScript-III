@@ -23,7 +23,7 @@ function GameObject(attr) {
 }
 
 GameObject.prototype.destroy = function() {
-  return `${this.name} was removed from the game.`;
+  return `${this.name} was removed from the game...`;
 };
 
 /*
@@ -41,7 +41,7 @@ function CharacterStats(attr) {
 CharacterStats.prototype = Object.create(GameObject.prototype);
 
 CharacterStats.prototype.takeDamage = function() {
-  return `${this.name} took damage.`;
+  return `Ouch! ${this.name} took damage!`;
 };
 
 /*
@@ -145,8 +145,75 @@ Hero.prototype = Object.create(Humanoid.prototype);
 
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 
-Villain.prototype.attack = function() {};
+Humanoid.prototype.attack = function(opponent) {
+  let randomInt = Math.floor(Math.random() * this.weapons.length);
+  let damage = Math.floor(Math.random() * 3 + 1);
+  opponent.healthPoints -= damage;
 
-Hero.prototype.attack = function() {};
+  console.log(`${this.name} attacks ${opponent.name}!`);
+  console.log(`He hits him with his ${this.weapons[randomInt]}!`);
+  console.log(opponent.takeDamage());
+  console.log(
+    `${opponent.name}'s health is now at ${opponent.healthPoints}...`
+  );
+  
+  if (opponent.healthPoints <= 0) {
+    console.log(`${opponent.name} has been defeated!`);
+    console.log(opponent.destroy());
+    console.log(`${this.name.toUpperCase()} IS VICTORIOUS!!`);
+  };
+};
+
+// Hero.prototype.attack = function(opponent) {
+//   let randomInt = Math.floor(Math.random() * (this.weapons.length));
+//   let damage = Math.floor(Math.random() * 4);
+//   console.log(`${this.name} attacks ${opponent.name}!`);
+//   console.log(`He hits him with his ${this.weapons[randomInt]} and causes -${damage}!`)
+// };
 
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
+const johnWick = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 3
+  },
+  healthPoints: 10,
+  name: "John Wick",
+  team: "Excommunicado",
+  weapons: [
+    "Right Fist",
+    "Left Fist",
+    "Right Foot",
+    "Left Foot",
+    "Library Book"
+  ],
+  language: "Belarusian"
+});
+
+const boban = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 2,
+    height: 5
+  },
+  healthPoints: 10,
+  name: "Boban",
+  team: "The High Table",
+  weapons: ["Right Fist", "Left Fist"],
+  language: "Serbian"
+});
+
+const runGame = (hero, villain) => {
+  console.log(hero.greet());
+  console.log(villain.greet());
+
+  while (hero.healthPoints > 0 && villain.healthPoints > 0) {
+    let randomInt = Math.floor(Math.random() * 2);
+    randomInt === 1 ? hero.attack(villain) : villain.attack(hero);
+  };
+};
+
+runGame(johnWick, boban);
